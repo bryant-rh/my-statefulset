@@ -1,0 +1,31 @@
+apiVersion: apps.mystatefulset.com/v1
+kind: MyStatefulset
+metadata:
+  name: mystatefulset-sample
+spec:
+  replicas: 3
+  serviceName: mystatefulset-svc
+  selector:
+    matchLabels:
+      app: mystatefulset-sample
+  template:
+    metadata:
+      labels:
+        app: mystatefulset-sample
+    spec:
+      containers:
+      - name: nginx
+        image: docker.io/library/nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

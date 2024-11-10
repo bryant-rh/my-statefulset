@@ -1,0 +1,20 @@
+# permissions for end users to view mystatefulsets.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mystatefulset-viewer-role
+rules:
+- apiGroups:
+  - apps.mystatefulset.com
+  resources:
+  - mystatefulsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps.mystatefulset.com
+  resources:
+  - mystatefulsets/status
+  verbs:
+  - get

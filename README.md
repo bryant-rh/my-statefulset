@@ -11,3 +11,17 @@
 9. 完成以后通过pull request 提交，并备注面试姓名+联系方式，然后即时联系HR以免超时；
 
 谢谢合作
+
+
+# 单元测试
+```Bash
+# 运行单元测试
+make test-unit
+
+# 查看测试覆盖率
+make test-coverage
+
+# 运行特定测试
+make test-specific TEST_PATTERN=TestMyStatefulsetReconciler
+
+```

@@ -1,0 +1,30 @@
+name: buildx
+
+on:
+  push:
+    paths:
+      - 'Dockerfile'
+      - .version
+
+jobs:
+  buildx:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: setup-qemu-action
+        uses: docker/setup-qemu-action@v1
+      - name: setup-buildx-action
+        uses: docker/setup-buildx-action@v1
+      - name: login-docker
+        uses: docker/login-action@v1
+        with:
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+      - name: Setup Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.18
+      - name: run-makefile
+        run: |
+          make docker-buildx
