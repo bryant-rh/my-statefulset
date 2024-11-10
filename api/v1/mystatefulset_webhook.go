@@ -24,9 +24,9 @@ const (
 	maxReplicas     = int32(100) // 添加最大副本数限制
 )
 
-//+kubebuilder:rbac:groups=apps.my.domain,resources=mystatefulsets,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=apps.my.domain,resources=mystatefulsets/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=apps.my.domain,resources=mystatefulsets/finalizers,verbs=update
+//+kubebuilder:rbac:groups=apps.mystatefulset.com,resources=mystatefulsets,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=apps.mystatefulset.com,resources=mystatefulsets/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=apps.mystatefulset.com,resources=mystatefulsets/finalizers,verbs=update
 //+kubebuilder:rbac:groups=admissionregistration.k8s.io,resources=validatingwebhookconfigurations,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=admissionregistration.k8s.io,resources=mutatingwebhookconfigurations,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups="",resources=secrets,verbs=get;list;watch;create;update;patch;delete
