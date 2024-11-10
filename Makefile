@@ -1,4 +1,5 @@
-
+VERSION = $(shell cat .version)
+COMMIT_SHA ?= $(shell git rev-parse --short HEAD)
 # Image URL to use all building/pushing image targets
 #IMG ?= controller:latest
 IMG ?= bryantrh/mystatefulset-controller:${VERSION}-${COMMIT_SHA}
