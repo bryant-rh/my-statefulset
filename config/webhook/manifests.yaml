@@ -11,12 +11,12 @@ webhooks:
     service:
       name: webhook-service
       namespace: system
-      path: /mutate-apps-my-domain-v1-mystatefulset
+      path: /mutate-apps-mystatefulset-com-v1-mystatefulset
   failurePolicy: Fail
   name: mmystatefulset.kb.io
   rules:
   - apiGroups:
-    - apps.my.domain
+    - apps.mystatefulset.com
     apiVersions:
     - v1
     operations:
@@ -38,12 +38,12 @@ webhooks:
     service:
       name: webhook-service
       namespace: system
-      path: /validate-apps-my-domain-v1-mystatefulset
+      path: /validate-apps-mystatefulset-com-v1-mystatefulset
   failurePolicy: Fail
   name: vmystatefulset.kb.io
   rules:
   - apiGroups:
-    - apps.my.domain
+    - apps.mystatefulset.com
     apiVersions:
     - v1
     operations:

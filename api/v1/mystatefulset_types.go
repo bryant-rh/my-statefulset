@@ -104,13 +104,14 @@ type MyStatefulsetStatus struct {
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:subresource:scale:specpath=.spec.replicas,statuspath=.status.replicas,selectorpath=.status.selector
-//+kubebuilder:resource:shortName=kms
+//+kubebuilder:resource:path=mystatefulsets,scope=Namespaced,shortName=kms
 //+kubebuilder:printcolumn:name="DESIRED",type="integer",JSONPath=".spec.replicas",description="Desired number of pods"
 //+kubebuilder:printcolumn:name="READY",type="integer",JSONPath=".status.readyReplicas",description="Number of pods ready"
 //+kubebuilder:printcolumn:name="CURRENT",type="integer",JSONPath=".status.currentReplicas",description="Current number of pods"
 //+kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 //+kubebuilder:printcolumn:name="UPDATED",type="integer",JSONPath=".status.updatedReplicas",description="Number of pods updated"
 //+kubebuilder:printcolumn:name="AVAILABLE",type="integer",JSONPath=".status.availableReplicas",description="Number of pods available"
+//+groupName=apps.mystatefulset.com
 
 // MyStatefulset is the Schema for the mystatefulsets API
 type MyStatefulset struct {

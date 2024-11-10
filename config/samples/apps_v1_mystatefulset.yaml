@@ -3,7 +3,7 @@ kind: MyStatefulset
 metadata:
   name: mystatefulset-sample
 spec:
-  replicas: 3
+  replicas: 0
   serviceName: mystatefulset-svc
   selector:
     matchLabels:

@@ -24,6 +24,14 @@ const (
 	maxReplicas     = int32(100) // 添加最大副本数限制
 )
 
+//+kubebuilder:rbac:groups=apps.my.domain,resources=mystatefulsets,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=apps.my.domain,resources=mystatefulsets/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=apps.my.domain,resources=mystatefulsets/finalizers,verbs=update
+//+kubebuilder:rbac:groups=admissionregistration.k8s.io,resources=validatingwebhookconfigurations,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=admissionregistration.k8s.io,resources=mutatingwebhookconfigurations,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups="",resources=secrets,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups="",resources=services,verbs=get;list;watch
+
 // SetupWebhookWithManager 将 webhook 注册到 manager 中
 func (r *MyStatefulset) SetupWebhookWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewWebhookManagedBy(mgr).
@@ -31,16 +39,18 @@ func (r *MyStatefulset) SetupWebhookWithManager(mgr ctrl.Manager) error {
 		Complete()
 }
 
-//+kubebuilder:webhook:path=/mutate-apps-my-domain-v1-mystatefulset,mutating=true,failurePolicy=fail,sideEffects=None,groups=apps.my.domain,resources=mystatefulsets,verbs=create;update,versions=v1,name=mmystatefulset.kb.io,admissionReviewVersions=v1
+//+kubebuilder:webhook:path=/mutate-apps-mystatefulset-com-v1-mystatefulset,mutating=true,failurePolicy=fail,sideEffects=None,groups=apps.mystatefulset.com,resources=mystatefulsets,verbs=create;update,versions=v1,name=mmystatefulset.kb.io,admissionReviewVersions=v1
 
 var _ webhook.Defaulter = &MyStatefulset{}
 
 // Default 实现了 webhook.Defaulter 接口，用于设置默认值
 func (r *MyStatefulset) Default() {
-	mystatefulsetlog.Info("setting default values", "name", r.Name)
+	mystatefulsetlog.Info("starting default webhook", "name", r.Name)
+	defer mystatefulsetlog.Info("finished default webhook", "name", r.Name)
 
 	// 设置默认副本数
 	if r.Spec.Replicas == 0 {
+		mystatefulsetlog.Info("setting default replicas", "name", r.Name, "replicas", defaultReplicas)
 		r.Spec.Replicas = defaultReplicas
 	}
 
@@ -62,13 +72,14 @@ func (r *MyStatefulset) Default() {
 	}
 }
 
-//+kubebuilder:webhook:path=/validate-apps-my-domain-v1-mystatefulset,mutating=false,failurePolicy=fail,sideEffects=None,groups=apps.my.domain,resources=mystatefulsets,verbs=create;update,versions=v1,name=vmystatefulset.kb.io,admissionReviewVersions=v1
+//+kubebuilder:webhook:path=/validate-apps-mystatefulset-com-v1-mystatefulset,mutating=false,failurePolicy=fail,sideEffects=None,groups=apps.mystatefulset.com,resources=mystatefulsets,verbs=create;update,versions=v1,name=vmystatefulset.kb.io,admissionReviewVersions=v1
 
 var _ webhook.Validator = &MyStatefulset{}
 
 // ValidateCreate 实现了 webhook.Validator 接口
 func (r *MyStatefulset) ValidateCreate() error {
-	mystatefulsetlog.Info("validating creation", "name", r.Name)
+	mystatefulsetlog.Info("starting validate create", "name", r.Name)
+	defer mystatefulsetlog.Info("finished validate create", "name", r.Name)
 	return r.validateMyStatefulSet()
 }
 
