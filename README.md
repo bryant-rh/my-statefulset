@@ -92,3 +92,60 @@ make test-coverage
 make test-specific TEST_PATTERN=TestMyStatefulsetReconciler
 
 ```
+
+## 单元测试结果
+```Bash
+$ make test-unit 
+
+go fmt ./...
+go vet ./...
+go test ./... -v -coverprofile cover.out
+?   	github.com/bryant-rh/my-statefulset	[no test files]
+=== RUN   TestMyStatefulset_ValidateCreate
+=== RUN   TestMyStatefulset_ValidateCreate/valid_replicas
+=== RUN   TestMyStatefulset_ValidateCreate/invalid_replicas
+--- PASS: TestMyStatefulset_ValidateCreate (0.00s)
+    --- PASS: TestMyStatefulset_ValidateCreate/valid_replicas (0.00s)
+    --- PASS: TestMyStatefulset_ValidateCreate/invalid_replicas (0.00s)
+=== RUN   TestMyStatefulset_ValidateUpdate
+=== RUN   TestMyStatefulset_ValidateUpdate/valid_update
+--- PASS: TestMyStatefulset_ValidateUpdate (0.00s)
+    --- PASS: TestMyStatefulset_ValidateUpdate/valid_update (0.00s)
+=== RUN   TestAPIs
+    webhook_suite_test.go:54: Skipping integration tests
+--- SKIP: TestAPIs (0.00s)
+PASS
+coverage: 26.3% of statements
+ok  	github.com/bryant-rh/my-statefulset/api/v1	3.346s	coverage: 26.3% of statements
+=== RUN   TestMyStatefulsetReconciler_Reconcile
+=== RUN   TestMyStatefulsetReconciler_Reconcile/Valid_MyStatefulset
+=== RUN   TestMyStatefulsetReconciler_Reconcile/Scale_Up_Scenario
+=== RUN   TestMyStatefulsetReconciler_Reconcile/Scale_Down_Scenario
+=== RUN   TestMyStatefulsetReconciler_Reconcile/Update_Pod_Template
+--- PASS: TestMyStatefulsetReconciler_Reconcile (0.01s)
+    --- PASS: TestMyStatefulsetReconciler_Reconcile/Valid_MyStatefulset (0.00s)
+    --- PASS: TestMyStatefulsetReconciler_Reconcile/Scale_Up_Scenario (0.00s)
+    --- PASS: TestMyStatefulsetReconciler_Reconcile/Scale_Down_Scenario (0.00s)
+    --- PASS: TestMyStatefulsetReconciler_Reconcile/Update_Pod_Template (0.00s)
+=== RUN   TestMyStatefulsetReconciler_createPod
+--- PASS: TestMyStatefulsetReconciler_createPod (0.00s)
+=== RUN   TestMyStatefulsetReconciler_updateStatus
+=== RUN   TestMyStatefulsetReconciler_updateStatus/All_Pods_Ready
+--- PASS: TestMyStatefulsetReconciler_updateStatus (0.00s)
+    --- PASS: TestMyStatefulsetReconciler_updateStatus/All_Pods_Ready (0.00s)
+=== RUN   TestIsPodReady
+=== RUN   TestIsPodReady/Pod_is_ready
+=== RUN   TestIsPodReady/Pod_is_not_ready_-_wrong_phase
+=== RUN   TestIsPodReady/Pod_is_not_ready_-_condition_false
+--- PASS: TestIsPodReady (0.00s)
+    --- PASS: TestIsPodReady/Pod_is_ready (0.00s)
+    --- PASS: TestIsPodReady/Pod_is_not_ready_-_wrong_phase (0.00s)
+    --- PASS: TestIsPodReady/Pod_is_not_ready_-_condition_false (0.00s)
+=== RUN   TestAPIs
+    suite_test.go:47: Skipping integration tests
+--- SKIP: TestAPIs (0.00s)
+PASS
+coverage: 40.2% of statements
+ok  	github.com/bryant-rh/my-statefulset/controllers	2.949s	coverage: 40.2% of statements
+
+```
