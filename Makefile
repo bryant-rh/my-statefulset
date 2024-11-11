@@ -168,3 +168,31 @@ $(ENVTEST): $(LOCALBIN)
 .PHONY: test-integration
 test-integration: manifests generate fmt vet envtest ## Run integration tests.
 	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) -p path)" go test ./... -v -coverprofile cover.out
+
+##@ Helm
+
+.PHONY: helm-clean
+helm-clean: ## Clean helm charts
+	rm -rf deploy/helm
+
+.PHONY: helm-generate
+helm-generate: manifests kustomize ## Generate helm charts
+	./hack/kustomize-to-helm.sh
+
+.PHONY: helm-package
+helm-package: helm-generate ## Package helm charts
+	helm package deploy/helm/mystatefulset -d deploy/helm/packages
+
+.PHONY: helm-install
+helm-install: helm-generate ## Install helm charts
+	helm upgrade --install mystatefulset deploy/helm/mystatefulset \
+		--namespace mystatefulset-system \
+		--create-namespace \
+		--wait
+
+.PHONY: helm-uninstall
+helm-uninstall: ## Uninstall helm charts
+	helm uninstall mystatefulset -n mystatefulset-system
+
+.PHONY: helm
+helm: helm-clean helm-generate helm-package ## Generate and package helm charts

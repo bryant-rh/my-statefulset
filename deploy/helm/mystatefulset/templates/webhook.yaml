@@ -1,0 +1,59 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: mystatefulset-system/mystatefulset-serving-cert
+  labels:
+    control-plane: controller-manager
+  name: mystatefulset-mutating-webhook-configuration
+webhooks:
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: mystatefulset-webhook-service
+        namespace: {{ .Release.Namespace }}
+        path: /mutate-apps-mystatefulset-com-v1-mystatefulset
+    failurePolicy: Fail
+    name: mmystatefulset.kb.io
+    rules:
+      - apiGroups:
+          - apps.mystatefulset.com
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - mystatefulsets
+    sideEffects: None
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: mystatefulset-system/mystatefulset-serving-cert
+  labels:
+    control-plane: controller-manager
+  name: mystatefulset-validating-webhook-configuration
+webhooks:
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: mystatefulset-webhook-service
+        namespace: {{ .Release.Namespace }}
+        path: /validate-apps-mystatefulset-com-v1-mystatefulset
+    failurePolicy: Fail
+    name: vmystatefulset.kb.io
+    rules:
+      - apiGroups:
+          - apps.mystatefulset.com
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - mystatefulsets
+    sideEffects: None

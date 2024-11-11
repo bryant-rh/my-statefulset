@@ -1,0 +1,11 @@
+MyStatefulset Controller has been installed.
+
+Check the controller status:
+  kubectl get pods -n {{ .Release.Namespace }}
+
+Check the CRD:
+  kubectl get crd mystatefulsets.apps.mystatefulset.com
+
+Check the webhooks:
+  kubectl get validatingwebhookconfigurations
+  kubectl get mutatingwebhookconfigurations
